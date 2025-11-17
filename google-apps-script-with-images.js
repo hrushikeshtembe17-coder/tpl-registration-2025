@@ -20,12 +20,14 @@ function doPost(e) {
         'Photo Link',
         'Payment Screenshot Link',
         'Payment Amount',
+        'Payment Method',
+        'User UPI ID',
         'Status',
         'Submission Date'
       ]);
 
       // Format headers
-      const headerRange = sheet.getRange(1, 1, 1, 9);
+      const headerRange = sheet.getRange(1, 1, 1, 11);
       headerRange.setBackground('#667eea');
       headerRange.setFontColor('#ffffff');
       headerRange.setFontWeight('bold');
@@ -99,13 +101,15 @@ function doPost(e) {
       photoLink,
       screenshotLink,
       data.paymentAmount,
+      data.paymentMethod || 'QR Code',
+      data.userUpiId || 'N/A',
       data.status,
       new Date().toLocaleDateString('en-IN')
     ]);
     Logger.log('Row added successfully');
 
     // Auto-resize columns for better visibility
-    sheet.autoResizeColumns(1, 9);
+    sheet.autoResizeColumns(1, 11);
 
     // Return success response
     return ContentService.createTextOutput(JSON.stringify({
