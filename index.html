@@ -857,15 +857,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="tshirt_size">३. तुमच्या T-shirt ची साईज काय आहे?</label>
-                        <select id="tshirt_size" name="tshirt_size" required>
-                            <option value="">साईज निवडा</option>
-                            <option value="S">S (Small)</option>
-                            <option value="M">M (Medium)</option>
-                            <option value="L">L (Large)</option>
-                            <option value="XL">XL (Extra Large)</option>
-                            <option value="XXL">XXL (Double XL)</option>
-                        </select>
+                        <label for="tshirt_size">३. तुमच्या T-shirt ची साईज काय आहे? (नंबर मध्ये)</label>
+                        <input type="number" id="tshirt_size" name="tshirt_size"
+                               placeholder="उदा: 38, 40, 42, 44"
+                               min="28" max="60" step="2"
+                               required
+                               oninput="validateTshirtSize(this)">
+                        <div id="tshirtSizeValidation" style="margin-top: 8px; font-size: 0.9em;"></div>
+                        <p style="font-size: 0.85em; color: #666; margin-top: 8px;">
+                            💡 टीप: T-shirt साईज नंबर मध्ये एंटर करा (28 ते 60)
+                        </p>
                     </div>
 
                     <div class="form-group">
@@ -1126,6 +1127,38 @@
                 console.error('Error:', error);
                 alert('डेटा सबमिट करताना काही त्रुटी आली.\n\nError: ' + error.message + '\n\nकृपया पुन्हा प्रयत्न करा किंवा आयोजकांना संपर्क करा.');
             }
+        }
+
+        // Validate T-shirt Size
+        function validateTshirtSize(input) {
+            const value = parseInt(input.value);
+            const validationDiv = document.getElementById('tshirtSizeValidation');
+
+            if (!input.value) {
+                validationDiv.innerHTML = '';
+                return;
+            }
+
+            // Check if value is within range
+            if (value < 28 || value > 60) {
+                validationDiv.innerHTML = '<span style="color: #e74c3c;">✗ साईज 28 ते 60 मध्ये असावी</span>';
+                validationDiv.style.color = '#e74c3c';
+                input.setCustomValidity('साईज 28 ते 60 मध्ये असावी');
+                return false;
+            }
+
+            // Check if value is even number
+            if (value % 2 !== 0) {
+                validationDiv.innerHTML = '<span style="color: #f39c12;">⚠️ सामान्यतः साईज सम नंबर असते (38, 40, 42, इ.)</span>';
+                validationDiv.style.color = '#f39c12';
+                input.setCustomValidity(''); // Allow odd numbers but show warning
+            } else {
+                validationDiv.innerHTML = '<span style="color: #38ef7d;">✓ Valid Size</span>';
+                validationDiv.style.color = '#38ef7d';
+                input.setCustomValidity('');
+            }
+
+            return true;
         }
 
         // Download QR Code function
