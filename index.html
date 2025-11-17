@@ -648,12 +648,38 @@
                 border-radius: 15px;
             }
 
+            .header {
+                padding: 30px 20px;
+            }
+
             .header h1 {
                 font-size: 1.5em;
             }
 
             .header .subtitle {
                 font-size: 1em;
+            }
+
+            .logo {
+                max-width: 150px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .announcement {
+                padding: 15px 20px;
+                margin: 20px;
+            }
+
+            .announcement h2 {
+                font-size: 1.2em;
+            }
+
+            .announcement p {
+                font-size: 1em;
+                line-height: 1.6;
             }
 
             .contact-grid {
@@ -679,47 +705,218 @@
                 gap: 15px;
             }
 
+            .radio-option {
+                width: 100%;
+                padding: 12px 20px;
+            }
+
             .registration-form {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .registration-form h2 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-group label {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+
+            .form-group input[type="text"],
+            .form-group input[type="number"],
+            .form-group select {
+                padding: 12px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .file-upload-label {
+                padding: 12px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .file-upload-label span {
+                font-size: 1em;
+            }
+
+            #fileName, #screenshotFileName {
+                font-size: 0.85em;
+                margin-top: 5px;
+                word-break: break-word;
+            }
+
+            #photoValidation, #screenshotValidation, #tshirtSizeValidation {
+                font-size: 0.85em;
+            }
+
+            .preview-image {
+                max-width: 100%;
+                max-height: 150px;
+            }
+
+            .info-card, .entry-fee {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .info-card h3 {
+                font-size: 1.2em;
+            }
+
+            .payment-section {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .payment-section h2 {
+                font-size: 1.5em;
+            }
+
+            .payment-amount {
                 padding: 15px;
             }
 
-            .info-card, .announcement, .entry-fee {
+            .payment-amount .label {
+                font-size: 1em;
+            }
+
+            .payment-amount .amount {
+                font-size: 2.5em;
+            }
+
+            .qr-section {
                 padding: 20px;
             }
 
             .qr-code {
                 max-width: 100%;
                 height: auto;
+                padding: 10px;
+            }
+
+            .payment-instructions {
+                padding: 15px;
+            }
+
+            .payment-instructions h4 {
+                font-size: 1em;
+            }
+
+            .payment-instructions ol {
+                font-size: 0.9em;
+                line-height: 1.8;
+                padding-left: 15px;
+            }
+
+            .payment-instructions ol li {
+                margin-bottom: 10px;
             }
 
             .submit-button, .confirm-payment-btn {
                 padding: 15px 30px;
                 font-size: 1.1em;
+                width: 100%;
             }
 
-            input[type="text"], input[type="number"], input[type="email"], input[type="tel"], select {
-                font-size: 16px; /* Prevents zoom on iOS */
+            button[onclick="downloadQRCode()"] {
+                padding: 10px 20px !important;
+                font-size: 1em !important;
+                width: 100%;
             }
 
             .schedule-item {
                 flex-direction: column;
                 text-align: center;
                 gap: 5px;
+                padding: 12px;
             }
 
-            .amount {
-                font-size: 2.5em;
+            .schedule-item .date {
+                font-size: 1em;
+            }
+
+            .schedule-item .event {
+                font-size: 0.95em;
+            }
+
+            .cta-button {
+                padding: 12px 30px;
+                font-size: 1.1em;
+                width: 90%;
+                margin: 20px auto;
+            }
+
+            input[type="text"], input[type="number"], input[type="email"], input[type="tel"], select {
+                font-size: 16px; /* Prevents zoom on iOS */
             }
         }
 
         @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
             .header h1 {
+                font-size: 1.2em;
+            }
+
+            .header .subtitle {
+                font-size: 0.9em;
+            }
+
+            .logo {
+                max-width: 120px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .announcement {
+                padding: 12px 15px;
+                margin: 15px;
+            }
+
+            .announcement h2 {
+                font-size: 1.1em;
+            }
+
+            .announcement p {
+                font-size: 0.95em;
+            }
+
+            .registration-form, .payment-section {
+                padding: 15px;
+            }
+
+            .registration-form h2, .payment-section h2 {
                 font-size: 1.3em;
+            }
+
+            .form-group label {
+                font-size: 0.95em;
+            }
+
+            .form-group input[type="text"],
+            .form-group input[type="number"],
+            .form-group select {
+                padding: 10px;
             }
 
             .time-box {
                 min-width: 60px;
-                padding: 10px;
+                padding: 8px;
             }
 
             .number {
@@ -730,8 +927,38 @@
                 font-size: 0.7em;
             }
 
-            button {
+            .payment-amount .amount {
+                font-size: 2em;
+            }
+
+            .payment-instructions h4 {
+                font-size: 0.95em;
+            }
+
+            .payment-instructions ol {
+                font-size: 0.85em;
+            }
+
+            .submit-button, .confirm-payment-btn, .cta-button {
+                padding: 12px 20px;
                 font-size: 1em;
+            }
+
+            button[onclick="downloadQRCode()"] {
+                padding: 8px 15px !important;
+                font-size: 0.9em !important;
+            }
+
+            .info-card h3 {
+                font-size: 1.1em;
+            }
+
+            .contact-card .name {
+                font-size: 1em;
+            }
+
+            .contact-card .phone {
+                font-size: 0.9em;
             }
         }
     </style>
@@ -873,12 +1100,16 @@
 
                     <div class="form-group">
                         <label for="player_photo">४. तुमचा फोटो अपलोड करा</label>
-                        <input type="file" id="player_photo" name="player_photo" accept="image/*" required onchange="previewImage(event)">
+                        <input type="file" id="player_photo" name="player_photo" accept="image/jpeg,image/jpg,image/png" required onchange="previewImage(event)">
                         <label for="player_photo" class="file-upload-label">
                             <span>📷 फोटो निवडा</span>
                             <div id="fileName"></div>
                         </label>
+                        <div id="photoValidation" style="margin-top: 8px; font-size: 0.9em;"></div>
                         <img id="photoPreview" class="preview-image" alt="Photo Preview">
+                        <p style="font-size: 0.85em; color: #fff; margin-top: 8px;">
+                            💡 टीप: फक्त JPG, JPEG किंवा PNG फोटो (कमाल 5MB)
+                        </p>
                     </div>
 
                     <button type="submit" class="submit-button">नोंदणी पूर्ण करा ✓</button>
@@ -924,12 +1155,16 @@
                         <label style="display: block; color: #2c3e50; font-size: 1.2em; margin-bottom: 15px; font-weight: bold;">
                             📸 पेमेंट स्क्रीनशॉट अपलोड करा *
                         </label>
-                        <input type="file" id="payment_screenshot" accept="image/*" required onchange="previewPaymentScreenshot(event)">
+                        <input type="file" id="payment_screenshot" accept="image/jpeg,image/jpg,image/png" required onchange="previewPaymentScreenshot(event)">
                         <label for="payment_screenshot" class="file-upload-label">
                             <span>📷 स्क्रीनशॉट निवडा</span>
                             <div id="screenshotFileName"></div>
                         </label>
+                        <div id="screenshotValidation" style="margin-top: 8px; font-size: 0.9em;"></div>
                         <img id="screenshotPreview" class="preview-image" alt="Screenshot Preview">
+                        <p style="font-size: 0.85em; color: #666; margin-top: 8px;">
+                            💡 टीप: फक्त JPG, JPEG किंवा PNG फोटो (कमाल 5MB)
+                        </p>
                     </div>
 
                     <button class="confirm-payment-btn" onclick="confirmPayment()">नोंदणी सबमिट करा ✓</button>
@@ -981,21 +1216,49 @@
             form.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        // Preview uploaded image
+        // Preview uploaded image with validation
         function previewImage(event) {
             const file = event.target.files[0];
             const preview = document.getElementById('photoPreview');
             const fileName = document.getElementById('fileName');
+            const validationDiv = document.getElementById('photoValidation');
+            const input = event.target;
 
-            if (file) {
-                fileName.textContent = file.name;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
+            if (!file) {
+                validationDiv.innerHTML = '';
+                return;
             }
+
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            if (!validTypes.includes(file.type)) {
+                validationDiv.innerHTML = '<span style="color: #e74c3c;">✗ कृपया फक्त JPG, JPEG किंवा PNG फोटो निवडा</span>';
+                input.value = '';
+                fileName.textContent = '';
+                preview.style.display = 'none';
+                return;
+            }
+
+            // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                validationDiv.innerHTML = '<span style="color: #e74c3c;">✗ फोटो खूप मोठा आहे! कमाल 5MB असावा</span>';
+                input.value = '';
+                fileName.textContent = '';
+                preview.style.display = 'none';
+                return;
+            }
+
+            // File is valid
+            validationDiv.innerHTML = '<span style="color: #38ef7d;">✓ फोटो वैध आहे (' + (file.size / 1024).toFixed(1) + ' KB)</span>';
+            fileName.textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
         }
 
         // Handle form submission
@@ -1021,21 +1284,49 @@
             console.log('Form Data:', formData);
         }
 
-        // Preview payment screenshot
+        // Preview payment screenshot with validation
         function previewPaymentScreenshot(event) {
             const file = event.target.files[0];
             const preview = document.getElementById('screenshotPreview');
             const fileName = document.getElementById('screenshotFileName');
+            const validationDiv = document.getElementById('screenshotValidation');
+            const input = event.target;
 
-            if (file) {
-                fileName.textContent = file.name;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
+            if (!file) {
+                validationDiv.innerHTML = '';
+                return;
             }
+
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            if (!validTypes.includes(file.type)) {
+                validationDiv.innerHTML = '<span style="color: #e74c3c;">✗ कृपया फक्त JPG, JPEG किंवा PNG फोटो निवडा</span>';
+                input.value = '';
+                fileName.textContent = '';
+                preview.style.display = 'none';
+                return;
+            }
+
+            // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                validationDiv.innerHTML = '<span style="color: #e74c3c;">✗ फोटो खूप मोठा आहे! कमाल 5MB असावा</span>';
+                input.value = '';
+                fileName.textContent = '';
+                preview.style.display = 'none';
+                return;
+            }
+
+            // File is valid
+            validationDiv.innerHTML = '<span style="color: #38ef7d;">✓ स्क्रीनशॉट वैध आहे (' + (file.size / 1024).toFixed(1) + ' KB)</span>';
+            fileName.textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
         }
 
         // Helper function to convert file to Base64
