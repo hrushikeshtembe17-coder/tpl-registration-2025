@@ -1,16 +1,4 @@
 {
   "version": 2,
-  "name": "tpl-registration-2025",
-  "builds": [
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ]
+  "name": "tpl-registration-2025"
 }
