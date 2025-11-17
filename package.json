@@ -1,0 +1,18 @@
+{
+  "name": "tpl-registration-2025",
+  "version": "1.0.0",
+  "description": "Tapovan Premier League 2025 Registration Website",
+  "main": "index.html",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "tpl",
+    "cricket",
+    "registration",
+    "tapovan"
+  ],
+  "author": "hrushikesh.tembe17@extc.sce.edu.in",
+  "license": "MIT"
+}

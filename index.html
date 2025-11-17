@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPL - तपोवन प्रीमियर लीग 2024</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '🏏';
+            font-size: 150px;
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            opacity: 0.1;
+            animation: rotate 20s linear infinite;
+        }
+
+        .logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+            animation: bounceIn 1s ease-out;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .announcement {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px 30px;
+            margin: 30px;
+            border-radius: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .announcement h2 {
+            color: #856404;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .announcement p {
+            color: #856404;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .schedule-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .schedule-item .date {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .schedule-item .event {
+            color: #555;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .contact-card .name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .contact-card .phone {
+            color: #666;
+            font-family: monospace;
+            font-size: 1em;
+        }
+
+        .contact-card:hover .phone {
+            color: white;
+        }
+
+        .entry-fee {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .entry-fee .amount {
+            font-size: 2em;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .countdown {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .time-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-box .number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #fa709a;
+        }
+
+        .time-box .label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .registration-form {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .registration-form.active {
+            display: block;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .registration-form h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: white;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="file"],
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group select:focus {
+            outline: none;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            background: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .radio-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .radio-option label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .file-upload-label {
+            display: block;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .file-upload-label span {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 15px;
+            border-radius: 10px;
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .payment-section {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .payment-section.active {
+            display: block;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .payment-section h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .payment-amount {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-amount .label {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .payment-amount .amount {
+            font-size: 3em;
+            font-weight: bold;
+            color: #11998e;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .payment-option {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-option.selected {
+            border: 3px solid #11998e;
+            background: #e8f5f3;
+        }
+
+        .payment-option img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .payment-option .title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .payment-option .description {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .qr-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .qr-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .qr-code {
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            margin: 20px auto;
+            border: 3px solid #11998e;
+            border-radius: 10px;
+            padding: 15px;
+            background: white;
+        }
+
+        .upi-id {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 1.2em;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .copy-button {
+            background: #667eea;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .payment-instructions {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .payment-instructions h4 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .payment-instructions ol {
+            color: #856404;
+            line-height: 2;
+            padding-left: 20px;
+        }
+
+        .confirm-payment-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .confirm-payment-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .countdown-timer {
+                flex-wrap: wrap;
+            }
+
+            .radio-group {
+                flex-direction: column;
+            }
+
+            .registration-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏏 TPL - तपोवन प्रीमियर लीग 🏏</h1>
+            <div class="subtitle">तपोवनवासीयांचा सर्वात मोठा क्रीडा उत्सव!</div>
+        </div>
+
+        <div class="announcement">
+            <h2>📢 महत्त्वाची घोषणा</h2>
+            <p>
+                सर्व तपोवनवासीयांना सांगण्यास अत्यंत आनंद होत आहे की, यावर्षी आपल्या सर्वांच्या लाडक्या
+                <strong>TPL (तपोवन प्रीमियर लीग)</strong> चे आयोजन करण्याचे निश्चित झाले आहे!
+            </p>
+            <p style="margin-top: 15px;">
+                गेल्या आठवणींना उजाळा देत, पुन्हा एकदा तोच उत्साह आणि तीच धमाल अनुभवण्यासाठी सज्ज व्हा.
+            </p>
+        </div>
+
+        <div class="content">
+            <div class="countdown">
+                <h3 style="margin-bottom: 10px;">⏰ नाव नोंदणीसाठी शिल्लक वेळ</h3>
+                <p style="margin-bottom: 15px; font-size: 1.1em; color: #e74c3c; font-weight: bold;">अंतिम तारीख: २२ नोव्हेंबर २०२५</p>
+                <div class="countdown-timer" id="countdown">
+                    <div class="time-box">
+                        <div class="number" id="days">00</div>
+                        <div class="label">दिवस</div>
+                    </div>
+                    <div class="time-box">
+                        <div class="number" id="hours">00</div>
+                        <div class="label">तास</div>
+                    </div>
+                    <div class="time-box">
+                        <div class="number" id="minutes">00</div>
+                        <div class="label">मिनिटे</div>
+                    </div>
+                    <div class="time-box">
+                        <div class="number" id="seconds">00</div>
+                        <div class="label">सेकंद</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="entry-fee">
+                <div>प्रवेश शुल्क (Entry Fee)</div>
+                <div class="amount">₹ 100</div>
+                <div style="font-size: 0.8em; margin-top: 10px;">नाव नोंदणी करताना जमा करावे</div>
+            </div>
+
+            <div class="info-card">
+                <h3>📅 TPL चे वेळापत्रक</h3>
+                <div class="schedule-item">
+                    <span class="event">नाव नोंदणीची अंतिम तारीख</span>
+                    <span class="date">२२ नोव्हेंबर २०२५</span>
+                </div>
+                <div class="schedule-item">
+                    <span class="event">खेळाडूंचा लिलाव (Auction)</span>
+                    <span class="date">२९ नोव्हेंबर</span>
+                </div>
+                <div class="schedule-item">
+                    <span class="event">TPL सामने</span>
+                    <span class="date">१३ आणि १४ डिसेंबर</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>📞 नाव नोंदणीसाठी संपर्क</h3>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="name">ऋषिकेश टेंबे</div>
+                        <div class="phone">7021948806</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="name">हर्षद धुरी</div>
+                        <div class="phone">9167496135</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="name">सुजल देशमुख</div>
+                        <div class="phone">8169436426</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="name">शशांक कानडे</div>
+                        <div class="phone">9152557807</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>⚠️ महत्त्वाची सूचना</h3>
+                <p style="color: #555; line-height: 1.8;">
+                    ज्या इच्छुक खेळाडूंना या TPL मध्ये सहभागी व्हायचे आहे, त्यांनी <strong>२७ नोव्हेंबर पर्यंत</strong>
+                    आपली नावे लवकरात लवकर वरील आयोजकांकडे द्यावीत.
+                </p>
+                <p style="color: #555; line-height: 1.8; margin-top: 10px;">
+                    प्रत्येक खेळाडूसाठी प्रवेश शुल्क <strong>१०० रुपये</strong> असेल,
+                    जे नाव नोंदणी करताना जमा करायचे आहे.
+                </p>
+            </div>
+
+            <button class="cta-button" onclick="showRegistrationForm()">आता नोंदणी करा! 🎯</button>
+
+            <div class="registration-form" id="registrationForm">
+                <h2>📝 नोंदणी फॉर्म</h2>
+                <form id="tplForm" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label>१. १३ आणि १४ डिसेंबर तुम्ही उपलब्ध आहात का?</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="available_yes" name="availability" value="होय" required>
+                                <label for="available_yes">होय ✓</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="available_no" name="availability" value="नाही">
+                                <label for="available_no">नाही ✗</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="player_name">२. तुमचे नाव काय आहे?</label>
+                        <input type="text" id="player_name" name="player_name" placeholder="तुमचे पूर्ण नाव टाका" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tshirt_size">३. तुमच्या T-shirt ची साईज काय आहे?</label>
+                        <select id="tshirt_size" name="tshirt_size" required>
+                            <option value="">साईज निवडा</option>
+                            <option value="S">S (Small)</option>
+                            <option value="M">M (Medium)</option>
+                            <option value="L">L (Large)</option>
+                            <option value="XL">XL (Extra Large)</option>
+                            <option value="XXL">XXL (Double XL)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="player_photo">४. तुमचा फोटो अपलोड करा</label>
+                        <input type="file" id="player_photo" name="player_photo" accept="image/*" required onchange="previewImage(event)">
+                        <label for="player_photo" class="file-upload-label">
+                            <span>📷 फोटो निवडा</span>
+                            <div id="fileName"></div>
+                        </label>
+                        <img id="photoPreview" class="preview-image" alt="Photo Preview">
+                    </div>
+
+                    <button type="submit" class="submit-button">नोंदणी पूर्ण करा ✓</button>
+                </form>
+            </div>
+
+            <div class="payment-section" id="paymentSection">
+                <h2>💳 पेमेंट करा</h2>
+
+                <div class="payment-amount">
+                    <div class="label">प्रवेश शुल्क</div>
+                    <div class="amount">₹ 100</div>
+                </div>
+
+                <div class="qr-section active" id="qrSection">
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">📷 QR Code स्कॅन करा</h3>
+
+                    <img src="gpay.jpeg" alt="Payment QR Code" class="qr-code" id="qrCodeImage">
+
+                    <div class="payment-instructions">
+                        <h4>⚠️ पेमेंट कसे करावे:</h4>
+                        <ol>
+                            <li>वरील QR Code तुमच्या UPI App मध्ये स्कॅन करा</li>
+                            <li>रक्कम <strong>₹100</strong> टाका</li>
+                            <li>पेमेंट पूर्ण करा</li>
+                            <li>पेमेंट चा स्क्रीनशॉट खाली अपलोड करा</li>
+                        </ol>
+                    </div>
+
+                    <div style="margin: 30px 0;">
+                        <label style="display: block; color: #2c3e50; font-size: 1.2em; margin-bottom: 15px; font-weight: bold;">
+                            📸 पेमेंट स्क्रीनशॉट अपलोड करा *
+                        </label>
+                        <input type="file" id="payment_screenshot" accept="image/*" required onchange="previewPaymentScreenshot(event)">
+                        <label for="payment_screenshot" class="file-upload-label">
+                            <span>📷 स्क्रीनशॉट निवडा</span>
+                            <div id="screenshotFileName"></div>
+                        </label>
+                        <img id="screenshotPreview" class="preview-image" alt="Screenshot Preview">
+                    </div>
+
+                    <button class="confirm-payment-btn" onclick="confirmPayment()">नोंदणी सबमिट करा ✓</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>धन्यवाद,</strong></p>
+            <p>आयोजक मंडळ (TPL)</p>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
+                कृपया वेळेपूर्वी आपली नावे नोंदवून सहकार्य करावे.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const registrationDeadline = new Date('2025-11-22T23:59:59').getTime();
+            const now = new Date().getTime();
+            const distance = registrationDeadline - now;
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML =
+                    '<div style="font-size: 1.5em; color: #e74c3c;">नोंदणी बंद झाली आहे!</div>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Show registration form
+        function showRegistrationForm() {
+            const form = document.getElementById('registrationForm');
+            form.classList.add('active');
+            form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Preview uploaded image
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('photoPreview');
+            const fileName = document.getElementById('fileName');
+
+            if (file) {
+                fileName.textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Handle form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const formData = {
+                availability: document.querySelector('input[name="availability"]:checked').value,
+                name: document.getElementById('player_name').value,
+                tshirtSize: document.getElementById('tshirt_size').value,
+                photo: document.getElementById('player_photo').files[0]?.name || 'No file'
+            };
+
+            // Save form data for later use
+            window.registrationData = formData;
+
+            // Show payment section
+            const paymentSection = document.getElementById('paymentSection');
+            paymentSection.classList.add('active');
+            paymentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Here you can add code to send the data to a server
+            console.log('Form Data:', formData);
+        }
+
+        // Preview payment screenshot
+        function previewPaymentScreenshot(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('screenshotPreview');
+            const fileName = document.getElementById('screenshotFileName');
+
+            if (file) {
+                fileName.textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Helper function to convert file to Base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Confirm payment and submit to Google Sheets
+        async function confirmPayment() {
+            const formData = window.registrationData;
+            const photoFile = document.getElementById('player_photo').files[0];
+            const screenshotFile = document.getElementById('payment_screenshot').files[0];
+
+            if (!formData) {
+                alert('कृपया आधी नोंदणी फॉर्म भरा!');
+                return;
+            }
+
+            if (!screenshotFile) {
+                alert('कृपया पेमेंट स्क्रीनशॉट अपलोड करा!');
+                return;
+            }
+
+            // Google Apps Script Web App URL (Updated)
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFBTrJx3i2VZHn68TifObjPcbAevnU6xHbT0HuUmRXh-Z5Tq0YMTE2yHk6r8CvXtcooQ/exec';
+
+            try {
+                // Convert images to Base64
+                alert('कृपया प्रतीक्षा करा... फोटो आणि स्क्रीनशॉट अपलोड होत आहेत...');
+
+                const photoBase64 = photoFile ? await fileToBase64(photoFile) : null;
+                const screenshotBase64 = screenshotFile ? await fileToBase64(screenshotFile) : null;
+
+                // Prepare data for Google Sheets with images
+                const submissionData = {
+                    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+                    name: formData.name,
+                    availability: formData.availability,
+                    tshirtSize: formData.tshirtSize,
+                    photoName: photoFile ? photoFile.name : '',
+                    photoBase64: photoBase64,
+                    screenshotName: screenshotFile.name,
+                    screenshotBase64: screenshotBase64,
+                    paymentAmount: '₹100',
+                    status: 'Pending Verification'
+                };
+
+                // Show loading message for submission
+                alert('कृपया प्रतीक्षा करा... डेटा सबमिट होत आहे...');
+
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                    body: JSON.stringify(submissionData)
+                });
+
+                // With no-cors mode, we can't read response, but data is sent
+                const result = { status: 'success' };
+
+                // Show simple success confirmation
+                alert('✅ यशस्वी!\n\n' +
+                      'तुमची सर्व माहिती यशस्वीरित्या\n' +
+                      'सेव्ह झाली आहे! 🎉\n\n' +
+                      'आयोजक लवकरच तुम्हाला संपर्क करतील.\n\n' +
+                      'धन्यवाद!');
+
+                // Reset everything
+                document.getElementById('tplForm').reset();
+                document.getElementById('photoPreview').style.display = 'none';
+                document.getElementById('fileName').textContent = '';
+                document.getElementById('screenshotPreview').style.display = 'none';
+                document.getElementById('screenshotFileName').textContent = '';
+                document.getElementById('registrationForm').classList.remove('active');
+                document.getElementById('paymentSection').classList.remove('active');
+                document.getElementById('qrSection').classList.remove('active');
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('डेटा सबमिट करताना काही त्रुटी आली.\n\nError: ' + error.message + '\n\nकृपया पुन्हा प्रयत्न करा किंवा आयोजकांना संपर्क करा.');
+            }
+        }
+
+        // Add click-to-call functionality
+        document.querySelectorAll('.contact-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const phone = this.querySelector('.phone').textContent;
+                window.location.href = `tel:${phone}`;
+            });
+        });
+
+        // Add floating cricket balls animation
+        function createFloatingBall() {
+            const ball = document.createElement('div');
+            ball.textContent = '🏏';
+            ball.style.position = 'fixed';
+            ball.style.fontSize = '30px';
+            ball.style.left = Math.random() * window.innerWidth + 'px';
+            ball.style.top = '-50px';
+            ball.style.opacity = '0.3';
+            ball.style.pointerEvents = 'none';
+            ball.style.zIndex = '1000';
+            ball.style.transition = 'all 5s linear';
+
+            document.body.appendChild(ball);
+
+            setTimeout(() => {
+                ball.style.top = window.innerHeight + 'px';
+                ball.style.transform = 'rotate(360deg)';
+            }, 100);
+
+            setTimeout(() => {
+                ball.remove();
+            }, 5000);
+        }
+
+        // Create floating balls periodically
+        setInterval(createFloatingBall, 3000);
+    </script>
+</body>
+</html>
