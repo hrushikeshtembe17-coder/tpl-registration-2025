@@ -627,6 +627,16 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
 
+        /* Download QR Code Button Hover Effect */
+        button[onclick="downloadQRCode()"]:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+        }
+
+        button[onclick="downloadQRCode()"]:active {
+            transform: translateY(0);
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -883,10 +893,24 @@
                 <div class="qr-section active" id="qrSection">
                     <h3 style="color: #2c3e50; margin-bottom: 20px;">📷 QR Code स्कॅन करा</h3>
                     <img src="gpay.jpeg" alt="Payment QR Code" class="qr-code" id="qrCodeImage">
+
+                    <!-- Download QR Code Button -->
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button onclick="downloadQRCode()" style="padding: 12px 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 25px; font-size: 1.1em; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s; display: inline-flex; align-items: center; gap: 10px;">
+                            <span>📥</span>
+                            <span>QR Code डाउनलोड करा</span>
+                        </button>
+                        <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                            💡 QR Code डाउनलोड करून नंतर स्कॅन करा
+                        </p>
+                    </div>
+
                     <div class="payment-instructions">
                         <h4>⚠️ पेमेंट कसे करावे:</h4>
                         <ol>
-                            <li>वरील QR Code तुमच्या UPI App मध्ये स्कॅन करा</li>
+                            <li>वरील QR Code तुमच्या UPI App मध्ये स्कॅन करा<br>
+                                <strong>किंवा</strong><br>
+                                QR Code डाउनलोड करा आणि नंतर Gallery मधून स्कॅन करा</li>
                             <li>रक्कम <strong>₹100</strong> टाका</li>
                             <li>पेमेंट पूर्ण करा</li>
                             <li>पेमेंट चा स्क्रीनशॉट खाली अपलोड करा</li>
@@ -1102,6 +1126,24 @@
                 console.error('Error:', error);
                 alert('डेटा सबमिट करताना काही त्रुटी आली.\n\nError: ' + error.message + '\n\nकृपया पुन्हा प्रयत्न करा किंवा आयोजकांना संपर्क करा.');
             }
+        }
+
+        // Download QR Code function
+        function downloadQRCode() {
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.href = 'gpay.jpeg';
+            link.download = 'TPL_Payment_QR_Code.jpg';
+
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Show confirmation message
+            alert('✅ QR Code डाउनलोड सुरू झाला!\n\n' +
+                  '📱 आपल्या Gallery मध्ये "TPL_Payment_QR_Code.jpg" शोधा.\n\n' +
+                  '💡 टीप: QR Code आपल्या Phone च्या Downloads फोल्डरमध्ये सेव्ह होईल.');
         }
 
         // Add click-to-call functionality
