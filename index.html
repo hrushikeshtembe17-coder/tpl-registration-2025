@@ -628,24 +628,98 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 15px;
+            }
+
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.5em;
+            }
+
+            .header .subtitle {
+                font-size: 1em;
             }
 
             .contact-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
             }
 
             .countdown-timer {
                 flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .time-box {
+                min-width: 70px;
+            }
+
+            .number {
+                font-size: 2em;
             }
 
             .radio-group {
                 flex-direction: column;
+                gap: 15px;
             }
 
             .registration-form {
+                padding: 15px;
+            }
+
+            .info-card, .announcement, .entry-fee {
                 padding: 20px;
+            }
+
+            .qr-code {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .submit-button, .confirm-payment-btn {
+                padding: 15px 30px;
+                font-size: 1.1em;
+            }
+
+            input[type="text"], input[type="email"], input[type="tel"], select {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .schedule-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+
+            .amount {
+                font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .time-box {
+                min-width: 60px;
+                padding: 10px;
+            }
+
+            .number {
+                font-size: 1.5em;
+            }
+
+            .label {
+                font-size: 0.7em;
+            }
+
+            button {
+                font-size: 1em;
             }
         }
     </style>
@@ -739,7 +813,7 @@
             <div class="info-card">
                 <h3>⚠️ महत्त्वाची सूचना</h3>
                 <p style="color: #555; line-height: 1.8;">
-                    ज्या इच्छुक खेळाडूंना या TPL मध्ये सहभागी व्हायचे आहे, त्यांनी <strong>२७ नोव्हेंबर पर्यंत</strong>
+                    ज्या इच्छुक खेळाडूंना या TPL मध्ये सहभागी व्हायचे आहे, त्यांनी <strong>२२ नोव्हेंबर पर्यंत</strong>
                     आपली नावे लवकरात लवकर वरील आयोजकांकडे द्यावीत.
                 </p>
                 <p style="color: #555; line-height: 1.8; margin-top: 10px;">
@@ -807,73 +881,16 @@
                 </div>
 
                 <div class="qr-section active" id="qrSection">
-                    <!-- Payment Method Selection -->
-                    <div style="margin-bottom: 30px; text-align: center;">
-                        <h3 style="color: #2c3e50; margin-bottom: 20px;">💳 पेमेंट पद्धत निवडा</h3>
-                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                            <button onclick="selectPaymentMethod('qr')" id="qrMethodBtn" class="payment-method-btn active" style="flex: 1; min-width: 200px; padding: 15px; border: 2px solid #667eea; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: bold; transition: all 0.3s;">
-                                📷 QR Code स्कॅन
-                            </button>
-                            <button onclick="selectPaymentMethod('upi')" id="upiMethodBtn" class="payment-method-btn" style="flex: 1; min-width: 200px; padding: 15px; border: 2px solid #667eea; background: white; color: #667eea; border-radius: 10px; cursor: pointer; font-size: 1.1em; font-weight: bold; transition: all 0.3s;">
-                                📱 UPI ID द्वारे
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- QR Code Payment Section -->
-                    <div id="qrPaymentSection" style="display: block;">
-                        <h3 style="color: #2c3e50; margin-bottom: 20px;">📷 QR Code स्कॅन करा</h3>
-                        <img src="gpay.jpeg" alt="Payment QR Code" class="qr-code" id="qrCodeImage">
-                        <div class="payment-instructions">
-                            <h4>⚠️ पेमेंट कसे करावे:</h4>
-                            <ol>
-                                <li>वरील QR Code तुमच्या UPI App मध्ये स्कॅन करा</li>
-                                <li>रक्कम <strong>₹100</strong> टाका</li>
-                                <li>पेमेंट पूर्ण करा</li>
-                                <li>पेमेंट चा स्क्रीनशॉट खाली अपलोड करा</li>
-                            </ol>
-                        </div>
-                    </div>
-
-                    <!-- UPI ID Payment Section -->
-                    <div id="upiPaymentSection" style="display: none;">
-                        <h3 style="color: #2c3e50; margin-bottom: 20px;">📱 UPI द्वारे पेमेंट करा</h3>
-
-                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 15px; margin-bottom: 20px; color: white;">
-                            <p style="font-size: 1.1em; margin-bottom: 10px;">💡 <strong>UPI Payment ची माहिती:</strong></p>
-                            <p style="font-size: 0.95em; line-height: 1.6;">
-                                तुमचा UPI ID एंटर करा आणि आम्ही तुम्हाला ₹100 ची पेमेंट रिक्वेस्ट पाठवू.
-                                तुम्हाला तुमच्या UPI App मध्ये notification येईल.
-                            </p>
-                        </div>
-
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; color: #2c3e50; font-size: 1.2em; margin-bottom: 10px; font-weight: bold;">
-                                📱 तुमचा UPI ID एंटर करा *
-                            </label>
-                            <input type="text" id="userUpiId" placeholder="उदा: yourname@paytm, 9876543210@ybl"
-                                   style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 1.1em; box-sizing: border-box;"
-                                   onblur="validateUPI(this.value)">
-                            <div id="upiValidation" style="margin-top: 10px; font-size: 0.9em;"></div>
-                        </div>
-
-                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; margin-bottom: 20px;">
-                            <h4 style="color: #2c3e50; margin-bottom: 15px;">📋 पेमेंट कशी करावी:</h4>
-                            <ol style="line-height: 2; color: #2c3e50;">
-                                <li>तुमचा UPI ID वर एंटर करा</li>
-                                <li>"पेमेंट रिक्वेस्ट पाठवा" बटण दाबा</li>
-                                <li>तुम्हाला UPI App मध्ये notification येईल</li>
-                                <li>Notification उघडा आणि ₹100 पेमेंट करा</li>
-                                <li>पेमेंट स्क्रीनशॉट खाली अपलोड करा</li>
-                            </ol>
-                        </div>
-
-                        <button onclick="sendUpiPaymentRequest()" id="sendUpiRequestBtn"
-                                style="width: 100%; padding: 18px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; border: none; border-radius: 50px; font-size: 1.2em; font-weight: bold; cursor: pointer; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: all 0.3s;">
-                            💸 पेमेंट रिक्वेस्ट पाठवा
-                        </button>
-
-                        <div id="upiRequestStatus" style="display: none; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; font-size: 1.1em;"></div>
+                    <h3 style="color: #2c3e50; margin-bottom: 20px;">📷 QR Code स्कॅन करा</h3>
+                    <img src="gpay.jpeg" alt="Payment QR Code" class="qr-code" id="qrCodeImage">
+                    <div class="payment-instructions">
+                        <h4>⚠️ पेमेंट कसे करावे:</h4>
+                        <ol>
+                            <li>वरील QR Code तुमच्या UPI App मध्ये स्कॅन करा</li>
+                            <li>रक्कम <strong>₹100</strong> टाका</li>
+                            <li>पेमेंट पूर्ण करा</li>
+                            <li>पेमेंट चा स्क्रीनशॉट खाली अपलोड करा</li>
+                        </ol>
                     </div>
 
                     <div style="margin: 30px 0;">
@@ -1041,8 +1058,8 @@
                     screenshotName: screenshotFile.name,
                     screenshotBase64: screenshotBase64,
                     paymentAmount: '₹100',
-                    paymentMethod: selectedPaymentMethod === 'upi' ? 'UPI' : 'QR Code',
-                    userUpiId: selectedPaymentMethod === 'upi' ? userUpiIdGlobal : 'N/A',
+                    paymentMethod: 'QR Code',
+                    userUpiId: 'N/A',
                     status: 'Pending Verification'
                 };
 
@@ -1084,144 +1101,6 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert('डेटा सबमिट करताना काही त्रुटी आली.\n\nError: ' + error.message + '\n\nकृपया पुन्हा प्रयत्न करा किंवा आयोजकांना संपर्क करा.');
-            }
-        }
-
-        // Payment Method Selection
-        let selectedPaymentMethod = 'qr';
-        let userUpiIdGlobal = '';
-
-        function selectPaymentMethod(method) {
-            selectedPaymentMethod = method;
-
-            const qrBtn = document.getElementById('qrMethodBtn');
-            const upiBtn = document.getElementById('upiMethodBtn');
-            const qrSection = document.getElementById('qrPaymentSection');
-            const upiSection = document.getElementById('upiPaymentSection');
-
-            if (method === 'qr') {
-                // Show QR section, hide UPI section
-                qrSection.style.display = 'block';
-                upiSection.style.display = 'none';
-
-                // Update button styles
-                qrBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                qrBtn.style.color = 'white';
-                upiBtn.style.background = 'white';
-                upiBtn.style.color = '#667eea';
-            } else {
-                // Show UPI section, hide QR section
-                qrSection.style.display = 'none';
-                upiSection.style.display = 'block';
-
-                // Update button styles
-                upiBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100())';
-                upiBtn.style.color = 'white';
-                qrBtn.style.background = 'white';
-                qrBtn.style.color = '#667eea';
-            }
-        }
-
-        // Validate UPI ID
-        function validateUPI(upiId) {
-            const upiValidation = document.getElementById('upiValidation');
-
-            // UPI ID format: username@provider
-            const upiRegex = /^[\w.-]+@[\w.-]+$/;
-
-            if (!upiId) {
-                upiValidation.innerHTML = '';
-                return false;
-            }
-
-            if (upiRegex.test(upiId)) {
-                upiValidation.innerHTML = '<span style="color: #38ef7d;">✓ Valid UPI ID</span>';
-                return true;
-            } else {
-                upiValidation.innerHTML = '<span style="color: #e74c3c;">✗ Invalid UPI ID format. उदा: yourname@paytm</span>';
-                return false;
-            }
-        }
-
-        // Send UPI Payment Request
-        async function sendUpiPaymentRequest() {
-            const upiId = document.getElementById('userUpiId').value.trim();
-            const statusDiv = document.getElementById('upiRequestStatus');
-            const sendBtn = document.getElementById('sendUpiRequestBtn');
-
-            if (!upiId) {
-                alert('कृपया तुमचा UPI ID एंटर करा!');
-                return;
-            }
-
-            if (!validateUPI(upiId)) {
-                alert('कृपया valid UPI ID एंटर करा!');
-                return;
-            }
-
-            // Store UPI ID for later submission
-            userUpiIdGlobal = upiId;
-
-            // Show loading state
-            sendBtn.disabled = true;
-            sendBtn.innerHTML = '⏳ रिक्वेस्ट पाठवत आहे...';
-            sendBtn.style.background = '#95a5a6';
-
-            try {
-                // Generate UPI payment link
-                const merchantUpi = 'hrushikeshtembe17@paytm'; // Replace with your actual UPI ID
-                const merchantName = 'TPL Registration';
-                const amount = '100';
-                const transactionNote = 'TPL 2025 Registration Fee';
-
-                // Create UPI deep link
-                const upiLink = `upi://pay?pa=${merchantUpi}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
-
-                // Show success message
-                statusDiv.style.display = 'block';
-                statusDiv.style.background = '#d4edda';
-                statusDiv.style.color = '#155724';
-                statusDiv.style.border = '2px solid #c3e6cb';
-                statusDiv.innerHTML = `
-                    <div style="margin-bottom: 15px;">
-                        <strong>✅ UPI Payment Link तयार झाली!</strong>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        तुमचा UPI ID: <strong>${upiId}</strong>
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        खालील बटण दाबा आणि तुमच्या UPI App मध्ये ₹100 पेमेंट करा:
-                    </div>
-                    <a href="${upiLink}" target="_blank" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; text-decoration: none; border-radius: 25px; font-weight: bold; margin: 10px 0;">
-                        💳 UPI App मध्ये पेमेंट करा
-                    </a>
-                    <div style="margin-top: 15px; font-size: 0.9em;">
-                        पेमेंट केल्यानंतर स्क्रीनशॉट खाली अपलोड करा ⬇️
-                    </div>
-                `;
-
-                // Update button
-                sendBtn.innerHTML = '✓ लिंक तयार झाली';
-                sendBtn.style.background = '#38ef7d';
-
-                // Scroll to screenshot upload
-                setTimeout(() => {
-                    document.querySelector('[for="payment_screenshot"]').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 1000);
-
-            } catch (error) {
-                statusDiv.style.display = 'block';
-                statusDiv.style.background = '#f8d7da';
-                statusDiv.style.color = '#721c24';
-                statusDiv.style.border = '2px solid #f5c6cb';
-                statusDiv.innerHTML = `
-                    <strong>❌ Error:</strong> ${error.message}<br>
-                    कृपया पुन्हा प्रयत्न करा.
-                `;
-
-                sendBtn.disabled = false;
-                sendBtn.innerHTML = '💸 पेमेंट रिक्वेस्ट पाठवा';
-                sendBtn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
             }
         }
 
