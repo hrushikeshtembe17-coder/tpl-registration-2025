@@ -1460,31 +1460,48 @@
             const player = players[currentPlayerIndex];
             if (!player || player.status !== 'available') return;
 
+            let selectedTeam = currentBidder;
+            let finalPrice = player.currentBid;
+
+            // If no bids placed, ask which team to sell to at base price
             if (!currentBidder) {
-                alert('No bids placed! Player must have at least one bid to be sold.');
-                return;
+                const teamNames = Object.keys(teams);
+                let teamsList = teamNames.map((name, index) => `${index + 1}. ${name} (Purse: ₹${teams[name].purse})`).join('\n');
+
+                const teamChoice = prompt(
+                    `No bids placed! Sell ${player.name} at base price ₹${player.basePrice}\n\n` +
+                    `Select team (enter number 1-6):\n${teamsList}`
+                );
+
+                if (!teamChoice || teamChoice < 1 || teamChoice > 6) {
+                    return;
+                }
+
+                selectedTeam = teamNames[parseInt(teamChoice) - 1];
+                finalPrice = player.basePrice;
             }
 
-            const team = teams[currentBidder];
+            const team = teams[selectedTeam];
 
-            if (team.purse < player.currentBid) {
-                alert(currentBidder + ' does not have enough purse!');
+            if (team.purse < finalPrice) {
+                alert(selectedTeam + ' does not have enough purse! Remaining: ₹' + team.purse);
                 return;
             }
 
             // Update player status
             player.status = 'sold';
-            player.boughtBy = currentBidder;
-            player.finalPrice = player.currentBid;
+            player.boughtBy = selectedTeam;
+            player.finalPrice = finalPrice;
+            player.currentBid = finalPrice;
 
             // Update team
-            team.purse -= player.currentBid;
+            team.purse -= finalPrice;
             team.players.push(player);
 
             // Save to localStorage
             saveAuctionData();
 
-            alert('🎉 ' + player.name + ' SOLD to ' + currentBidder + ' for ₹' + player.currentBid + '!');
+            alert('🎉 ' + player.name + ' SOLD to ' + selectedTeam + ' for ₹' + finalPrice + '!');
 
             // Move to next player
             nextPlayer();
