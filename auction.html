@@ -1345,7 +1345,6 @@
                 const card = document.createElement('div');
                 card.className = 'player-card' + (player.status === 'sold' ? ' sold' : '');
                 card.innerHTML = `
-                    <button class="edit-button" onclick="openEditModal(${player.id})">✏️ Edit</button>
                     <img src="${player.image}" alt="${player.name}" class="player-image">
                     <div class="player-info">
                         <div class="player-name">${player.name}</div>
@@ -1543,8 +1542,14 @@
                     team.players.forEach(player => {
                         playersHTML += `
                             <div class="team-player-item">
-                                <span class="player-bought-name">${player.name}</span>
-                                <span class="player-bought-price">₹${player.finalPrice}</span>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="player-bought-name">${player.name}</span>
+                                    <span style="font-size: 0.8em; color: #aaa;">(Group ${player.group})</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span class="player-bought-price">₹${player.finalPrice}</span>
+                                    <button class="edit-button" style="position: static; margin: 0; padding: 5px 12px; font-size: 0.85em;" onclick="openEditModal(${player.id})">✏️ Edit</button>
+                                </div>
                             </div>
                         `;
                     });
