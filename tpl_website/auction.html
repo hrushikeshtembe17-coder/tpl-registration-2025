@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPL Auction 2025 - Player Bidding</title>
+    <link rel="icon" type="image/jpeg" href="tpl_logo.jpg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            position: relative;
+        }
+
+        .reset-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .reset-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            transform: scale(1.05);
+        }
+
+        /* View Sections */
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Player Gallery */
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .player-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .player-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+            border-color: #f5576c;
+        }
+
+        .player-card.sold {
+            opacity: 0.6;
+            border-color: #38ef7d;
+        }
+
+        .player-card.sold::after {
+            content: 'SOLD!';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 3em;
+            font-weight: bold;
+            color: #38ef7d;
+            text-shadow: 0 0 20px rgba(56, 239, 125, 0.8);
+            z-index: 10;
+        }
+
+        .player-image {
+            width: 100%;
+            height: 350px;
+            object-fit: contain;
+            display: block;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 10px;
+        }
+
+        .player-info {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .player-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .player-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 0.85em;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #38ef7d;
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+
+        .bid-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+
+        .bid-button:hover {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+            transform: scale(1.05);
+        }
+
+        .bid-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* Live Auction View */
+        .auction-stage {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .current-player-image {
+            max-width: 450px;
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            border-radius: 20px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 15px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .current-bid-info {
+            margin: 30px 0;
+        }
+
+        .current-bid-label {
+            font-size: 1.5em;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .current-bid-amount {
+            font-size: 4em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .bidding-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .team-bid-button {
+            padding: 20px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            min-width: 150px;
+        }
+
+        .team-bid-button:hover:not(:disabled) {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .team-bid-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .team-1 { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: white; }
+        .team-2 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+        .team-3 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; }
+        .team-4 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; }
+        .team-5 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .team-6 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sold-button {
+            background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
+            color: white;
+        }
+
+        .skip-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+
+        .next-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Teams Dashboard */
+        .teams-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .team-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .team-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .team-purse {
+            font-size: 1.3em;
+            color: #38ef7d;
+        }
+
+        .team-players {
+            margin-top: 20px;
+        }
+
+        .team-player-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .player-bought-name {
+            font-weight: bold;
+        }
+
+        .player-bought-price {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .empty-team {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .reset-button {
+                position: static;
+                margin-top: 15px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 0.9em;
+                padding: 8px 16px;
+            }
+
+            .nav-tab {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+
+            .players-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .current-bid-amount {
+                font-size: 2.5em;
+            }
+
+            .team-bid-button {
+                padding: 15px 25px;
+                font-size: 1.1em;
+                min-width: 120px;
+            }
+
+            .auction-stage {
+                padding: 20px;
+            }
+
+            .current-player-image {
+                max-width: 100%;
+                max-height: 500px;
+                padding: 10px;
+            }
+
+            .player-image {
+                height: 300px;
+                padding: 8px;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Group Filter */
+        .group-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .group-button {
+            padding: 10px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .group-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .group-button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-color: #f5576c;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏏 TPL AUCTION 2025 🏏</h1>
+        <div class="subtitle">Tapovan Premier League - Player Bidding System</div>
+        <button class="reset-button" onclick="resetAuction()">
+            🔄 Reset Auction
+        </button>
+    </div>
+
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showView('gallery')">Player Gallery</button>
+            <button class="nav-tab" onclick="showView('auction')">Live Auction</button>
+            <button class="nav-tab" onclick="showView('teams')">Teams Dashboard</button>
+        </div>
+
+        <!-- Player Gallery View -->
+        <div id="gallery" class="view-section active">
+            <div class="group-filter">
+                <button class="group-button active" onclick="filterGroup('all')">All Groups</button>
+                <button class="group-button" onclick="filterGroup('A')">Group A</button>
+                <button class="group-button" onclick="filterGroup('B')">Group B</button>
+                <button class="group-button" onclick="filterGroup('C')">Group C</button>
+                <button class="group-button" onclick="filterGroup('D')">Group D</button>
+                <button class="group-button" onclick="filterGroup('E')">Group E</button>
+                <button class="group-button" onclick="filterGroup('F')">Group F</button>
+            </div>
+
+            <div class="players-grid" id="playersGrid">
+                <!-- Players will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Live Auction View -->
+        <div id="auction" class="view-section">
+            <div class="auction-stage">
+                <h2 style="font-size: 2em; margin-bottom: 20px;">Current Player on Auction</h2>
+
+                <div id="currentPlayerDisplay">
+                    <img id="currentPlayerImage" class="current-player-image" src="" alt="Player">
+                    <h3 id="currentPlayerName" style="font-size: 2em; margin: 20px 0; color: #ffd700;"></h3>
+                    <p id="currentPlayerGroup" style="font-size: 1.2em; color: #aaa;"></p>
+                </div>
+
+                <div class="current-bid-info">
+                    <div class="current-bid-label">Current Bid</div>
+                    <div class="current-bid-amount" id="currentBidAmount">₹100</div>
+                    <div id="currentBidTeam" style="font-size: 1.2em; margin-top: 10px; color: #38ef7d;"></div>
+                </div>
+
+                <div class="bidding-controls" id="biddingControls">
+                    <button class="team-bid-button team-1" onclick="placeBid('Tapovan Hunters')">
+                        <div style="font-weight: bold;">Tapovan Hunters</div>
+                        <div style="font-size: 0.75em; margin-top: 3px;">Owner: Nishant Dhuri</div>
+                        <div style="font-size: 0.8em; margin-top: 5px;">BID +₹10</div>
+                    </button>
+                    <button class="team-bid-button team-2" onclick="placeBid('Tapovan Titans')">
+                        <div style="font-weight: bold;">Tapovan Titans</div>
+                        <div style="font-size: 0.75em; margin-top: 3px;">Owner: Vaibhav Bangera</div>
+                        <div style="font-size: 0.8em; margin-top: 5px;">BID +₹10</div>
+                    </button>
+                    <button class="team-bid-button team-3" onclick="placeBid('Tapovan Air Strikers')">
+                        <div style="font-weight: bold;">Tapovan Air Strikers</div>
+                        <div style="font-size: 0.75em; margin-top: 3px;">Owner: Harshad Kavtankar</div>
+                        <div style="font-size: 0.8em; margin-top: 5px;">BID +₹10</div>
+                    </button>
+                    <button class="team-bid-button team-4" onclick="placeBid('Tapovan Super Strikers')">
+                        <div style="font-weight: bold;">Tapovan Super Strikers</div>
+                        <div style="font-size: 0.75em; margin-top: 3px;">Owner: Omkar Tondwalkar</div>
+                        <div style="font-size: 0.8em; margin-top: 5px;">BID +₹10</div>
+                    </button>
+                    <button class="team-bid-button team-5" onclick="placeBid('Tapovan Game Changers')">
+                        <div style="font-weight: bold;">Tapovan Game Changers</div>
+                        <div style="font-size: 0.75em; margin-top: 3px;">Owner: Nandan Lorekar</div>
+                        <div style="font-size: 0.8em; margin-top: 5px;">BID +₹10</div>
+                    </button>
+                    <button class="team-bid-button team-6" onclick="placeBid('Tapovan Panthers')">
+                        <div style="font-weight: bold;">Tapovan Panthers</div>
+                        <div style="font-size: 0.75em; margin-top: 3px;">Owner: Mayur Bommankanti</div>
+                        <div style="font-size: 0.8em; margin-top: 5px;">BID +₹10</div>
+                    </button>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-button sold-button" onclick="markAsSold()">✓ SOLD!</button>
+                    <button class="action-button skip-button" onclick="skipPlayer()">⤷ Unsold</button>
+                    <button class="action-button next-button" onclick="nextPlayer()">→ Next Player</button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="font-size: 1.2em; color: #aaa;">
+                    Player <span id="currentPlayerIndex">1</span> of <span id="totalPlayers">0</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Teams Dashboard View -->
+        <div id="teams" class="view-section">
+            <div class="teams-container" id="teamsContainer">
+                <!-- Teams will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Player Data
+        const players = [
+            // Group A Players
+            {
+                id: 1,
+                name: 'Vighnesh Ayre',
+                group: 'A',
+                image: 'group A/1000077373.jpg',
+                basePrice: 800,
+                currentBid: 800,
+                status: 'available', // available, sold, unsold
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 2,
+                name: 'Pratik Kadam',
+                group: 'A',
+                image: 'group A/1000073631.jpg',
+                basePrice: 800,
+                currentBid: 800,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 3,
+                name: 'Chetan Tendwalkar',
+                group: 'A',
+                image: 'group A/1000076803.jpg',
+                basePrice: 800,
+                currentBid: 800,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 4,
+                name: 'Hrushikesh Tembe',
+                group: 'A',
+                image: 'group A/1000077377.jpg',
+                basePrice: 800,
+                currentBid: 800,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 5,
+                name: 'Avadumber Tondwalkar',
+                group: 'A',
+                image: 'group A/1000073797.jpg',
+                basePrice: 800,
+                currentBid: 800,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 6,
+                name: 'Vinayak Thukrul',
+                group: 'A',
+                image: 'group A/1000077346.jpg',
+                basePrice: 800,
+                currentBid: 800,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            // Group F Players
+            {
+                id: 7,
+                name: 'Siddhesh Kumbar',
+                group: 'F',
+                image: 'group F/image_b10a04b1-f6e1-4e30-a4a3-65f863e66095.jpg',
+                basePrice: 100,
+                currentBid: 100,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 8,
+                name: 'Kannan More',
+                group: 'F',
+                image: 'group F/image_abab2bbd-d6cb-4c6a-94fb-059330f6d3e6.jpg',
+                basePrice: 100,
+                currentBid: 100,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 9,
+                name: 'Yash Utekar',
+                group: 'F',
+                image: 'group F/image_853f8517-0b82-479a-ac99-92c69a4ef2ff.jpg',
+                basePrice: 100,
+                currentBid: 100,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 10,
+                name: 'Yuvraj Lahane',
+                group: 'F',
+                image: 'group F/image_f5d440ff-9383-4daf-8540-6fb5c22351cd.jpg',
+                basePrice: 100,
+                currentBid: 100,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 11,
+                name: 'Shreyas Hindlekar',
+                group: 'F',
+                image: 'group F/image_464032c9-9975-4603-838d-757b7573de8c.jpg',
+                basePrice: 100,
+                currentBid: 100,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 12,
+                name: 'Atharav Kumbhar',
+                group: 'F',
+                image: 'group F/image_8d7d63b1-fcf7-4a71-93bb-dfefb8d6aa01.jpg',
+                basePrice: 100,
+                currentBid: 100,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            // Group B Players
+            {
+                id: 13,
+                name: 'Pranay Jadhav',
+                group: 'B',
+                image: 'group B/1000074070.jpg',
+                basePrice: 650,
+                currentBid: 650,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 14,
+                name: 'Sujal Deshmukh',
+                group: 'B',
+                image: 'group B/1000076821.jpg',
+                basePrice: 650,
+                currentBid: 650,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 15,
+                name: 'Sahil Tembe',
+                group: 'B',
+                image: 'group B/1000076834.jpg',
+                basePrice: 650,
+                currentBid: 650,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 16,
+                name: 'Harshad Dhuri',
+                group: 'B',
+                image: 'group B/1000074837.jpg',
+                basePrice: 650,
+                currentBid: 650,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 17,
+                name: 'Shriraj Jadhav',
+                group: 'B',
+                image: 'group B/1000074071.jpg',
+                basePrice: 650,
+                currentBid: 650,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 18,
+                name: 'Tanish Futak',
+                group: 'B',
+                image: 'group B/1000073800.jpg',
+                basePrice: 650,
+                currentBid: 650,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            // Group C Players
+            {
+                id: 19,
+                name: 'Mukesh Sawant',
+                group: 'C',
+                image: 'group C/1000079132.jpg',
+                basePrice: 500,
+                currentBid: 500,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 20,
+                name: 'Sagar Kumbhar',
+                group: 'C',
+                image: 'group C/1000076836.jpg',
+                basePrice: 500,
+                currentBid: 500,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 21,
+                name: 'Sanket Kamagal',
+                group: 'C',
+                image: 'group C/1000076801.jpg',
+                basePrice: 500,
+                currentBid: 500,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 22,
+                name: 'Ramesh Chilweri',
+                group: 'C',
+                image: 'group C/1000077351.jpg',
+                basePrice: 500,
+                currentBid: 500,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 23,
+                name: 'Rajesh Mangaduli',
+                group: 'C',
+                image: 'group C/1000073796.jpg',
+                basePrice: 500,
+                currentBid: 500,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 24,
+                name: 'Vipul Kokate',
+                group: 'C',
+                image: 'group C/1000077354.jpg',
+                basePrice: 500,
+                currentBid: 500,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            // Group D Players
+            {
+                id: 25,
+                name: 'Sanchit Toshnikar',
+                group: 'D',
+                image: 'group D/1000074076.jpg',
+                basePrice: 350,
+                currentBid: 350,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 26,
+                name: 'Smit Raut',
+                group: 'D',
+                image: 'group D/1000073823.jpg',
+                basePrice: 350,
+                currentBid: 350,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 27,
+                name: 'Anay Pangain',
+                group: 'D',
+                image: 'group D/1000074078.jpg',
+                basePrice: 350,
+                currentBid: 350,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 28,
+                name: 'Soham Towalkakr',
+                group: 'D',
+                image: 'group D/1000073627.jpg',
+                basePrice: 350,
+                currentBid: 350,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 29,
+                name: 'Prasad Bharat',
+                group: 'D',
+                image: 'group D/1000073951.jpg',
+                basePrice: 350,
+                currentBid: 350,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 30,
+                name: 'Mrunal Kanade',
+                group: 'D',
+                image: 'group D/1000077350.jpg',
+                basePrice: 350,
+                currentBid: 350,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            // Group E Players
+            {
+                id: 31,
+                name: 'Shubham Ambre',
+                group: 'E',
+                image: 'group E/1000077376.jpg',
+                basePrice: 200,
+                currentBid: 200,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 32,
+                name: 'Swapnil Utkekar',
+                group: 'E',
+                image: 'group E/1000074088.jpg',
+                basePrice: 200,
+                currentBid: 200,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 33,
+                name: 'Atharav Utekar',
+                group: 'E',
+                image: 'group E/1000076847.jpg',
+                basePrice: 200,
+                currentBid: 200,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 34,
+                name: 'Tejas Kadam',
+                group: 'E',
+                image: 'group E/1000076806.jpg',
+                basePrice: 200,
+                currentBid: 200,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 35,
+                name: 'Ganesh Kumbhar',
+                group: 'E',
+                image: 'group E/1000074087.jpg',
+                basePrice: 200,
+                currentBid: 200,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            },
+            {
+                id: 36,
+                name: 'Ganesh Kumbhar',
+                group: 'E',
+                image: 'group E/1000076826.jpg',
+                basePrice: 200,
+                currentBid: 200,
+                status: 'available',
+                boughtBy: null,
+                finalPrice: 0
+            }
+        ];
+
+        // Teams Data
+        const teams = {
+            'Tapovan Hunters': { owner: 'Nishant Dhuri', purse: 5000, players: [], color: '#ff6b6b' },
+            'Tapovan Titans': { owner: 'Vaibhav Bangera', purse: 5000, players: [], color: '#4facfe' },
+            'Tapovan Air Strikers': { owner: 'Harshad Kavtankar', purse: 5000, players: [], color: '#43e97b' },
+            'Tapovan Super Strikers': { owner: 'Omkar Tondwalkar', purse: 5000, players: [], color: '#fa709a' },
+            'Tapovan Game Changers': { owner: 'Nandan Lorekar', purse: 5000, players: [], color: '#667eea' },
+            'Tapovan Panthers': { owner: 'Mayur Bommankanti', purse: 5000, players: [], color: '#f093fb' }
+        };
+
+        // Auction State
+        let currentPlayerIndex = 0;
+        let currentBidder = null;
+        let currentGroup = 'all';
+
+        // LocalStorage Functions
+        function saveAuctionData() {
+            const auctionData = {
+                players: players,
+                teams: teams,
+                currentPlayerIndex: currentPlayerIndex,
+                currentBidder: currentBidder,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('tplAuctionData', JSON.stringify(auctionData));
+        }
+
+        function loadAuctionData() {
+            const savedData = localStorage.getItem('tplAuctionData');
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+
+                    // Restore players data
+                    data.players.forEach((savedPlayer, index) => {
+                        if (players[index]) {
+                            players[index].status = savedPlayer.status;
+                            players[index].boughtBy = savedPlayer.boughtBy;
+                            players[index].finalPrice = savedPlayer.finalPrice;
+                            players[index].currentBid = savedPlayer.currentBid;
+                        }
+                    });
+
+                    // Restore teams data
+                    Object.keys(data.teams).forEach(teamName => {
+                        if (teams[teamName]) {
+                            teams[teamName].purse = data.teams[teamName].purse;
+                            teams[teamName].players = data.teams[teamName].players;
+                        }
+                    });
+
+                    // Restore auction state
+                    currentPlayerIndex = data.currentPlayerIndex || 0;
+                    currentBidder = data.currentBidder;
+
+                    console.log('Auction data loaded from localStorage');
+                    return true;
+                } catch (e) {
+                    console.error('Error loading auction data:', e);
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved data first
+            loadAuctionData();
+
+            loadPlayers();
+            loadTeams();
+            startAuction();
+        });
+
+        // Show View
+        function showView(view) {
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(view).classList.add('active');
+            event.target.classList.add('active');
+
+            if (view === 'teams') {
+                loadTeams();
+            }
+        }
+
+        // Load Players in Gallery
+        function loadPlayers() {
+            const grid = document.getElementById('playersGrid');
+            grid.innerHTML = '';
+
+            players.forEach(player => {
+                if (currentGroup !== 'all' && player.group !== currentGroup) {
+                    return;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'player-card' + (player.status === 'sold' ? ' sold' : '');
+                card.innerHTML = `
+                    <img src="${player.image}" alt="${player.name}" class="player-image">
+                    <div class="player-info">
+                        <div class="player-name">${player.name}</div>
+                        <div style="font-size: 0.9em; color: #aaa; margin-top: 5px;">Group ${player.group}</div>
+                        <div class="player-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Base Price</div>
+                                <div class="stat-value">₹${player.basePrice}</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Status</div>
+                                <div class="stat-value" style="color: ${player.status === 'sold' ? '#38ef7d' : player.status === 'unsold' ? '#ff6b6b' : '#ffd700'}">
+                                    ${player.status.toUpperCase()}
+                                </div>
+                            </div>
+                        </div>
+                        ${player.status === 'sold' ? `
+                            <div style="margin-top: 15px; padding: 10px; background: rgba(56, 239, 125, 0.2); border-radius: 8px;">
+                                <div style="font-size: 0.9em; color: #aaa;">Bought by</div>
+                                <div style="font-weight: bold; color: #38ef7d; margin-top: 5px;">${player.boughtBy}</div>
+                                <div style="font-weight: bold; color: #ffd700; margin-top: 5px;">₹${player.finalPrice}</div>
+                            </div>
+                        ` : ''}
+                        ${player.status === 'available' ? `
+                            <button class="bid-button" onclick="startBiddingForPlayer(${player.id})">
+                                🎯 Start Bidding
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter by Group
+        function filterGroup(group) {
+            currentGroup = group;
+            document.querySelectorAll('.group-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            loadPlayers();
+        }
+
+        // Start Auction
+        function startAuction() {
+            const availablePlayers = players.filter(p => p.status === 'available');
+            if (availablePlayers.length > 0) {
+                displayPlayer(availablePlayers[0]);
+                document.getElementById('totalPlayers').textContent = players.length;
+            } else {
+                alert('No players available for auction!');
+            }
+        }
+
+        // Display Player
+        function displayPlayer(player) {
+            if (!player) {
+                alert('Auction complete! All players have been processed.');
+                return;
+            }
+
+            currentPlayerIndex = players.indexOf(player);
+            document.getElementById('currentPlayerImage').src = player.image;
+            document.getElementById('currentPlayerName').textContent = player.name;
+            document.getElementById('currentPlayerGroup').textContent = 'Group ' + player.group;
+            document.getElementById('currentBidAmount').textContent = '₹' + player.currentBid;
+            document.getElementById('currentBidTeam').textContent = currentBidder ? 'Leading: ' + currentBidder : 'No bids yet';
+            document.getElementById('currentPlayerIndex').textContent = currentPlayerIndex + 1;
+        }
+
+        // Start Bidding for Specific Player
+        function startBiddingForPlayer(playerId) {
+            const player = players.find(p => p.id === playerId);
+            if (player && player.status === 'available') {
+                displayPlayer(player);
+                showView('auction');
+                document.querySelectorAll('.nav-tab')[1].classList.add('active');
+            }
+        }
+
+        // Place Bid
+        function placeBid(teamName) {
+            const player = players[currentPlayerIndex];
+            if (!player || player.status !== 'available') return;
+
+            const team = teams[teamName];
+            const newBid = player.currentBid + 10;
+
+            if (team.purse < newBid) {
+                alert(teamName + ' does not have enough purse! Remaining: ₹' + team.purse);
+                return;
+            }
+
+            player.currentBid = newBid;
+            currentBidder = teamName;
+
+            document.getElementById('currentBidAmount').textContent = '₹' + newBid;
+            document.getElementById('currentBidTeam').textContent = 'Leading: ' + teamName;
+
+            // Save to localStorage
+            saveAuctionData();
+
+            // Add pulse animation
+            document.getElementById('currentBidAmount').classList.add('pulse');
+            setTimeout(() => {
+                document.getElementById('currentBidAmount').classList.remove('pulse');
+            }, 1000);
+        }
+
+        // Mark as Sold
+        function markAsSold() {
+            const player = players[currentPlayerIndex];
+            if (!player || player.status !== 'available') return;
+
+            if (!currentBidder) {
+                alert('No bids placed! Player must have at least one bid to be sold.');
+                return;
+            }
+
+            const team = teams[currentBidder];
+
+            if (team.purse < player.currentBid) {
+                alert(currentBidder + ' does not have enough purse!');
+                return;
+            }
+
+            // Update player status
+            player.status = 'sold';
+            player.boughtBy = currentBidder;
+            player.finalPrice = player.currentBid;
+
+            // Update team
+            team.purse -= player.currentBid;
+            team.players.push(player);
+
+            // Save to localStorage
+            saveAuctionData();
+
+            alert('🎉 ' + player.name + ' SOLD to ' + currentBidder + ' for ₹' + player.currentBid + '!');
+
+            // Move to next player
+            nextPlayer();
+        }
+
+        // Skip Player
+        function skipPlayer() {
+            const player = players[currentPlayerIndex];
+            if (!player) return;
+
+            if (confirm('Mark ' + player.name + ' as UNSOLD?')) {
+                player.status = 'unsold';
+                // Save to localStorage
+                saveAuctionData();
+                nextPlayer();
+            }
+        }
+
+        // Next Player
+        function nextPlayer() {
+            // Reset current bidder
+            currentBidder = null;
+            document.getElementById('currentBidTeam').textContent = '';
+
+            // Find next available player
+            const availablePlayers = players.filter(p => p.status === 'available');
+
+            if (availablePlayers.length > 0) {
+                displayPlayer(availablePlayers[0]);
+            } else {
+                alert('🎊 Auction Complete! Check Teams Dashboard to see all purchases.');
+                showView('teams');
+                document.querySelectorAll('.nav-tab')[2].click();
+            }
+
+            // Refresh gallery
+            loadPlayers();
+        }
+
+        // Load Teams Dashboard
+        function loadTeams() {
+            const container = document.getElementById('teamsContainer');
+            container.innerHTML = '';
+
+            Object.keys(teams).forEach(teamName => {
+                const team = teams[teamName];
+                const card = document.createElement('div');
+                card.className = 'team-card';
+                card.style.borderColor = team.color;
+
+                let playersHTML = '';
+                if (team.players.length === 0) {
+                    playersHTML = '<div class="empty-team">No players bought yet</div>';
+                } else {
+                    team.players.forEach(player => {
+                        playersHTML += `
+                            <div class="team-player-item">
+                                <span class="player-bought-name">${player.name}</span>
+                                <span class="player-bought-price">₹${player.finalPrice}</span>
+                            </div>
+                        `;
+                    });
+                }
+
+                card.innerHTML = `
+                    <div class="team-header">
+                        <div class="team-name" style="color: ${team.color}">${teamName}</div>
+                        <div style="font-size: 0.95em; color: #ffd700; margin-top: 5px;">Owner: ${team.owner}</div>
+                        <div class="team-purse">Remaining: ₹${team.purse}</div>
+                        <div style="font-size: 0.9em; color: #aaa; margin-top: 5px;">
+                            Players: ${team.players.length} | Spent: ₹${5000 - team.purse}
+                        </div>
+                    </div>
+                    <div class="team-players">
+                        ${playersHTML}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Reset Auction Function
+        function resetAuction() {
+            if (!confirm('⚠️ WARNING: This will reset the entire auction!\n\nAll player purchases, bids, and team data will be cleared.\n\nAre you sure you want to continue?')) {
+                return;
+            }
+
+            // Double confirmation
+            if (!confirm('🚨 FINAL CONFIRMATION\n\nThis action cannot be undone!\n\nClick OK to reset everything.')) {
+                return;
+            }
+
+            // Reset all players
+            players.forEach(player => {
+                player.status = 'available';
+                player.boughtBy = null;
+                player.finalPrice = 0;
+                // Reset currentBid to basePrice
+                player.currentBid = player.basePrice;
+            });
+
+            // Reset all teams
+            Object.keys(teams).forEach(teamName => {
+                teams[teamName].purse = 5000;
+                teams[teamName].players = [];
+            });
+
+            // Reset auction state
+            currentPlayerIndex = 0;
+            currentBidder = null;
+
+            // Clear localStorage
+            localStorage.removeItem('tplAuctionData');
+
+            // Refresh all views
+            loadPlayers();
+            loadTeams();
+            startAuction();
+
+            // Show success message
+            alert('✅ Auction has been reset successfully!\n\nAll players are now available for bidding.\nAll teams have ₹5000 purse.\n\nData cleared from browser storage.\n\nGood luck! 🏏');
+
+            // Go to player gallery
+            showView('gallery');
+            document.querySelectorAll('.nav-tab')[0].classList.add('active');
+        }
+    </script>
+</body>
+</html>
