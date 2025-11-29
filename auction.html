@@ -411,6 +411,157 @@
             font-style: italic;
         }
 
+        /* Edit Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-title {
+            font-size: 2em;
+            color: #ffd700;
+            margin: 0;
+        }
+
+        .close-button {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+            font-size: 1.5em;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: #ff6b6b;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #ffd700;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .save-button, .cancel-button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-button {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: #1a1a2e;
+        }
+
+        .save-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 233, 123, 0.4);
+        }
+
+        .cancel-button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+
+        .cancel-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .edit-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 5;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .edit-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .header h1 {
@@ -460,6 +611,15 @@
             .player-image {
                 height: 300px;
                 padding: 8px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .modal-title {
+                font-size: 1.5em;
             }
         }
 
@@ -607,6 +767,69 @@
             <div class="teams-container" id="teamsContainer">
                 <!-- Teams will be loaded here -->
             </div>
+        </div>
+    </div>
+
+    <!-- Edit Player Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">✏️ Edit Player</h2>
+                <button class="close-button" onclick="closeEditModal()">×</button>
+            </div>
+
+            <form id="editPlayerForm">
+                <input type="hidden" id="editPlayerId">
+
+                <div class="form-group">
+                    <label class="form-label">Player Name</label>
+                    <input type="text" id="editPlayerName" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Group</label>
+                    <select id="editPlayerGroup" class="form-select" required>
+                        <option value="A">Group A (₹800)</option>
+                        <option value="B">Group B (₹650)</option>
+                        <option value="C">Group C (₹500)</option>
+                        <option value="D">Group D (₹350)</option>
+                        <option value="E">Group E (₹200)</option>
+                        <option value="F">Group F (₹100)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select id="editPlayerStatus" class="form-select" required onchange="handleStatusChange()">
+                        <option value="available">Available</option>
+                        <option value="sold">Sold</option>
+                        <option value="unsold">Unsold</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="teamSelectGroup" style="display: none;">
+                    <label class="form-label">Team</label>
+                    <select id="editPlayerTeam" class="form-select">
+                        <option value="">-- Select Team --</option>
+                        <option value="Tapovan Hunters">Tapovan Hunters</option>
+                        <option value="Tapovan Titans">Tapovan Titans</option>
+                        <option value="Tapovan Air Strikers">Tapovan Air Strikers</option>
+                        <option value="Tapovan Super Strikers">Tapovan Super Strikers</option>
+                        <option value="Tapovan Game Changers">Tapovan Game Changers</option>
+                        <option value="Tapovan Panthers">Tapovan Panthers</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="priceInputGroup" style="display: none;">
+                    <label class="form-label">Final Price (₹)</label>
+                    <input type="number" id="editPlayerPrice" class="form-input" min="0" step="10">
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="save-button">💾 Save Changes</button>
+                    <button type="button" class="cancel-button" onclick="closeEditModal()">❌ Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -906,7 +1129,7 @@
             },
             {
                 id: 27,
-                name: 'Anay Pangain',
+                name: 'Anvay pangam',
                 group: 'D',
                 image: 'group D/1000074078.jpg',
                 basePrice: 350,
@@ -1122,6 +1345,7 @@
                 const card = document.createElement('div');
                 card.className = 'player-card' + (player.status === 'sold' ? ' sold' : '');
                 card.innerHTML = `
+                    <button class="edit-button" onclick="openEditModal(${player.id})">✏️ Edit</button>
                     <img src="${player.image}" alt="${player.name}" class="player-image">
                     <div class="player-info">
                         <div class="player-name">${player.name}</div>
@@ -1389,6 +1613,152 @@
             showView('gallery');
             document.querySelectorAll('.nav-tab')[0].classList.add('active');
         }
+
+        // Edit Player Functions
+        function openEditModal(playerId) {
+            const player = players.find(p => p.id === playerId);
+            if (!player) return;
+
+            // Populate form
+            document.getElementById('editPlayerId').value = player.id;
+            document.getElementById('editPlayerName').value = player.name;
+            document.getElementById('editPlayerGroup').value = player.group;
+            document.getElementById('editPlayerStatus').value = player.status;
+
+            // Handle conditional fields
+            handleStatusChange();
+
+            if (player.status === 'sold') {
+                document.getElementById('editPlayerTeam').value = player.boughtBy || '';
+                document.getElementById('editPlayerPrice').value = player.finalPrice || player.basePrice;
+            }
+
+            // Show modal
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            document.getElementById('editPlayerForm').reset();
+        }
+
+        function handleStatusChange() {
+            const status = document.getElementById('editPlayerStatus').value;
+            const teamGroup = document.getElementById('teamSelectGroup');
+            const priceGroup = document.getElementById('priceInputGroup');
+
+            if (status === 'sold') {
+                teamGroup.style.display = 'block';
+                priceGroup.style.display = 'block';
+                document.getElementById('editPlayerTeam').required = true;
+                document.getElementById('editPlayerPrice').required = true;
+            } else {
+                teamGroup.style.display = 'none';
+                priceGroup.style.display = 'none';
+                document.getElementById('editPlayerTeam').required = false;
+                document.getElementById('editPlayerPrice').required = false;
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('editPlayerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const playerId = parseInt(document.getElementById('editPlayerId').value);
+            const player = players.find(p => p.id === playerId);
+            if (!player) return;
+
+            // Get old team (if player was sold)
+            const oldTeam = player.boughtBy;
+            const oldPrice = player.finalPrice;
+
+            // Update player data
+            const newName = document.getElementById('editPlayerName').value;
+            const newGroup = document.getElementById('editPlayerGroup').value;
+            const newStatus = document.getElementById('editPlayerStatus').value;
+
+            // Update base price based on group
+            const basePrices = { 'A': 800, 'B': 650, 'C': 500, 'D': 350, 'E': 200, 'F': 100 };
+            player.basePrice = basePrices[newGroup];
+
+            player.name = newName;
+            player.group = newGroup;
+            player.status = newStatus;
+
+            // If changing from sold to another status, remove from old team
+            if (oldTeam && newStatus !== 'sold') {
+                const team = teams[oldTeam];
+                if (team) {
+                    team.purse += oldPrice;
+                    team.players = team.players.filter(p => p.id !== playerId);
+                }
+                player.boughtBy = null;
+                player.finalPrice = 0;
+            }
+
+            if (newStatus === 'sold') {
+                const newTeam = document.getElementById('editPlayerTeam').value;
+                const newPrice = parseInt(document.getElementById('editPlayerPrice').value);
+
+                // If team changed, update both teams
+                if (oldTeam && oldTeam !== newTeam) {
+                    // Remove from old team
+                    const oldTeamData = teams[oldTeam];
+                    if (oldTeamData) {
+                        oldTeamData.purse += oldPrice;
+                        oldTeamData.players = oldTeamData.players.filter(p => p.id !== playerId);
+                    }
+                }
+
+                // Update new team
+                const newTeamData = teams[newTeam];
+                if (newTeamData) {
+                    // If player was already in this team, refund old price
+                    if (oldTeam === newTeam) {
+                        newTeamData.purse += oldPrice;
+                        newTeamData.players = newTeamData.players.filter(p => p.id !== playerId);
+                    }
+
+                    // Add to new team with new price
+                    newTeamData.purse -= newPrice;
+                    newTeamData.players.push(player);
+                }
+
+                player.boughtBy = newTeam;
+                player.finalPrice = newPrice;
+                player.currentBid = newPrice;
+            } else if (newStatus === 'available') {
+                player.currentBid = player.basePrice;
+                player.boughtBy = null;
+                player.finalPrice = 0;
+            } else if (newStatus === 'unsold') {
+                player.boughtBy = null;
+                player.finalPrice = 0;
+            }
+
+            // Save to localStorage
+            saveAuctionData();
+
+            // Refresh views
+            loadPlayers();
+            loadTeams();
+            if (currentPlayerIndex < players.length) {
+                startAuction();
+            }
+
+            // Close modal
+            closeEditModal();
+
+            // Show success message
+            alert('✅ Player updated successfully!');
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
+        });
     </script>
 </body>
 </html>
