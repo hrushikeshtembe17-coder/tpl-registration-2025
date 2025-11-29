@@ -1,4 +1,7 @@
 {
   "version": 2,
-  "name": "tpl-registration-2025"
+  "name": "tpl-registration-2025",
+  "buildCommand": null,
+  "devCommand": null,
+  "installCommand": null
 }
